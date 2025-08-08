@@ -9,8 +9,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  inactivity_detector:
-    path: ../
+  inactivity_detector: ^0.0.2
 
 dev_dependencies:
   flutter_test:

@@ -1,6 +1,6 @@
 name: inactivity_detector
 description: "A widget that detects user inactivity and triggers callbacks after a specified duration."
-version: 0.0.1
+version: 0.0.2
 homepage: https://github.com/faishallogique/inactivity-detector
 
 environment:
