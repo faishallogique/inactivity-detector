@@ -302,22 +302,20 @@ class _InactivityDetectorState extends State<InactivityDetector>
 
     setState(() => _lifecycleState = state);
 
-    switch (state) {
-      case AppLifecycleState.paused:
-      case AppLifecycleState.inactive:
-      case AppLifecycleState.detached:
-      case AppLifecycleState.hidden:
-        // Pause the main inactivity timer when app goes to background
-        _timer?.cancel();
-        widget.onAppLifecyclePausedOrInactive?.call();
-        break;
-      case AppLifecycleState.resumed:
-        // When app resumes, show dialog immediately if countdown is active
-        // This ensures user sees the dialog when returning to the app
-        if (_hasInactivityDialog && !_isInactivityDialogVisible) {
-          _displayInactivityDialog();
-        }
-        break;
+    /// Handle app becoming inactive (e.g., switching to another app or receiving a call)
+    /// Cancel the inactivity timer and notify listeners that the app is paused/inactive
+    if (state == AppLifecycleState.inactive) {
+      if (_timer?.isActive == true) _timer?.cancel();
+      widget.onAppLifecyclePausedOrInactive?.call();
+    }
+    if (state == AppLifecycleState.resumed) {
+      if (_timer?.isActive == true) _timer?.cancel();
+
+      /// When app resumes, show dialog immediately.
+      /// This ensures user sees the dialog when returning to the app
+      if (_hasInactivityDialog && !_isInactivityDialogVisible) {
+        _displayInactivityDialog();
+      }
     }
   }
 
@@ -538,19 +536,12 @@ class _CountdownOverlayState extends State<_CountdownOverlay> {
     }
   }
 
-  /// Handles app lifecycle state changes to pause/resume countdown timer.
-  /// Pauses countdown when app goes to background and lets main detector handle resume.
+  /// Handles app lifecycle state changes to pause countdown timer.
+  /// Pauses countdown when app goes to background.
   void _onLifecycleStateChanged(AppLifecycleState state) {
-    switch (state) {
-      case AppLifecycleState.paused:
-      case AppLifecycleState.inactive:
-      case AppLifecycleState.detached:
-      case AppLifecycleState.hidden:
-        _pauseCountdownTimer();
-        break;
-      case AppLifecycleState.resumed:
-        // Don't resume timer automatically - let the main detector handle it
-        break;
+    if (state == AppLifecycleState.inactive ||
+        state == AppLifecycleState.resumed) {
+      _pauseCountdownTimer();
     }
   }
 
