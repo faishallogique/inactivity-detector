@@ -165,8 +165,8 @@
     }
   ],
   "generator": "pub",
-  "generatorVersion": "3.8.0",
+  "generatorVersion": "3.8.1",
   "flutterRoot": "file:///Users/faishal/.puro/envs/stable/flutter",
-  "flutterVersion": "3.32.0",
+  "flutterVersion": "3.32.8",
   "pubCache": "file:///Users/faishal/.puro/shared/pub_cache"
 }
